@@ -1,0 +1,23 @@
+#Unix/Linux系统管理员技术手册
+第十章：备份和恢复
+dump and restore
+1、relation command:
+    dump and restore
+    tar
+    dd
+    cpio
+2、relation software：Bacula
+include:
+    控制守护进程、控制台、存储守护进程、文件守护进程、数据库
+安装步骤：
+    安装数据库和Bacula的守护进程；
+    配置Bacula的守护进程；
+    配置存储守护进程；
+    配置控制台；
+    安装和配置客户端的文件守护进程
+操作：
+    启动Bacula的守护进程；
+    向存储池添加介质；
+    执行手动备份；
+    执行恢复；
+    
