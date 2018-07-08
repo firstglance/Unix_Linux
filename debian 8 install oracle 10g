@@ -1,0 +1,304 @@
+前段时间，一直想在Debian服务器系统上装一个Oracle 10，
+首先使用的是Debian 9，然后安装DB2，安装很顺利，虽然有一个报错，但是只是提示，不影响使用；
+然后安装Oracle 10g一直有问题，Oracle 10g一直装不上；之后各种搜索资料，因为Debian系列上安装Oracle10g资料较少，有些是环境不一致；
+有些是写的不全；
+最后没有办法，在google上搜了篇资料，换成Debian8试了下，一切顺利,OK，Perfect
+链接地址（reproduce from this address）：https://tarique21.wordpress.com/2010/04/05/oracle-10g-on-debian-64bit-32-bit-as-well/
+非常感谢这位大神！！！
+相关history文件如下：
+
+ ln -sf /bin/bash /bin/sh
+ ln -s /usr/bin/awk /bin/awk
+ ln -s /usr/bin/rpm /bin/rpm
+ ln -s /usr/bin/basename /bin/basename
+apt-get install gcc make binutils lesstif2 libc6 libc6-dev rpm libmotif3 libaio1 libstdc++5 gawk
+apt-get install gcc make binutils  libc6 libc6-dev rpm libmotif3 libaio1 libstdc++5 gawk
+dpkg --add-architecture i386
+aptitude update
+aptitude upgrade
+aptitude install libstdc++6:i386 libgcc1:i386 zlib1g:i386 libncurses5:i386
+apt-get install libmotif-dev
+apt-get install libxtst6:i386 
+apt-get install libxp6:i386 
+apt-get install libxp6:i386 
+dpkg -l |grep libx
+apt-get install libxp6:amd64 
+cd /home/oracle/
+ll
+ls -al
+mkdir -p /u01/app/oracle/product/10.2.0/db_1
+chown -R oracle.oinstall /u01
+chmod 775 /u01
+vi /etc/redhat-release
+vi .profile 
+hostname
+vi .profile 
+ls -l /u01/
+vi .bashrc 
+vi /home/oracle/.bashrc 
+. .bashrc 
+ll
+mv * /u01/
+cd /u01/
+ll
+chown -R oracle:oinstall *
+ll
+gunzip 10201_database_linux_x86-64.cpio.gz 
+ll
+cpio -idvm <10201_database_linux_x86-64.cpio 
+chown -R oracle:oinstall *
+ll
+vi /u01/database/enterprise.rsp
+chown -R oracle:oinstall *
+
+install gcc
+    1   ln -sf /bin/bash /bin/sh
+    2   ln -s /usr/bin/awk /bin/awk
+    3   ln -s /usr/bin/rpm /bin/rpm
+    4   ln -s /usr/bin/basename /bin/basename
+    5  apt-get install gcc make binutils lesstif2 libc6 libc6-dev rpm libmotif3 libaio1 libstdc++5 gawk
+    6  apt-get install gcc make binutils  libc6 libc6-dev rpm libmotif3 libaio1 libstdc++5 gawk
+    7  dpkg --add-architecture i386
+    8  aptitude update
+    9  aptitude upgrade
+   10  aptitude install libstdc++6:i386 libgcc1:i386 zlib1g:i386 libncurses5:i386
+   11  apt-get install libmotif-dev
+   12  apt-get install libxtst6:i386 
+   13  apt-get install libxp6:i386 
+   14  apt-get install libxp6:i386 
+   15  dpkg -l |grep libx
+   16  apt-get install libxp6:amd64 
+   17  d /home/oracle/
+   18  ll
+   19  cd /home/oracle/
+   20  ll
+   21  ls -al
+   22  mkdir -p /u01/app/oracle/product/10.2.0/db_1
+   23  chown -R oracle.oinstall /u01
+   24  chmod 775 /u01
+   25  vi /etc/redhat-release
+   26  vi .profile 
+   27  hostname
+   28  vi .profile 
+   29  ls -l /u01/
+   30  ll
+   31  cd ~
+   32  ll
+   33  ls -l
+   34  vi .bashrc 
+   35  vi /home/oracle/.bashrc 
+   36  vi /home/oracle/.bashrc 
+   37  . .bashrc 
+   38  ll
+   39  mv * /u01/
+   40  cd /u01/
+   41  ll
+   42  chown -R oracle:oinstall *
+   43  ll
+   44  gunzip 10201_database_linux_x86-64.cpio.gz 
+   45  ll
+   46  cpio -idvm <10201_database_linux_x86-64.cpio 
+   47  chown -R oracle:oinstall *
+   48  ll
+   49  vi /u01/database/enterprise.rsp
+   50  chown -R oracle:oinstall *
+   51  su - oracle
+   52  exit
+   53  apt-get inatall gcc
+   54  apt-get inatall gcc
+   55  apt-get inatall gcc
+   56  apt-get install gcc
+   57  aptitude install libgcc
+   58  aptitude install  libgcc1-dbg libgcc1-dbg:i386 libgcc1 libgcc1:i386 libgcc-4.8-dev libgcc-4.8-dev:i386 libgccxml-dev libgccxml-dev:i386 l
+ibgcc-4.9-dev libgcc-4.9-dev:i386   59  locate libgcc_s.so.1
+   60  vi /etc/ld.so.conf
+   61  locate /libgcc_s.so.1
+   62  ln -s /lib/x86_64-linux-gnu/libgcc_s.so.1 /lib64/libgcc_s.so.1
+   63  locate libstdc++.so.5
+   64  aptitude install libstdc++
+   65  aptitude install  libstdc++-4.8-dev libstdc++-4.8-dev:i386 libstdc++-arm-none-eabi-newlib libstdc++-4.9-dev libstdc++-4.9-dev:i386 libstd
+c++-4.8-doc libstdc++-4.9-doc libstdc++6-4.8-dbg    66  aptitude install  libstdc++-4.8-dev libstdc++-4.8-dev:i386 libstdc++-arm-none-eabi-newlib libstdc++-4.9-dev libstdc++-4.9-dev:i386 libstd
+c++-4.8-doc libstdc++-4.9-doc libstdc++6-4.8-dbg    67  locate libstdc++.so.5
+   68  aptitude install libstdc++:i386
+   69  aptitude install libstdc++5:i386
+   70  aptitude install libstdc++6:i386
+   71  locate libstdc++.so.5
+   72  updatedb
+   73  locate libstdc++.so.5
+   74  lns -s /usr/lib/i386-linux-gnu/libstdc++.so.5 /usr/lib64/libstdc++.so.5
+   75  ln -s /usr/lib/i386-linux-gnu/libstdc++.so.5 /usr/lib64/libstdc++.so.5
+   76  ls -l /usr/lib/i386-linux-gnu/libstdc++.so.5
+   77  ls -l /usr/lib/x86_64-linux-gnu/libstdc++.so.5
+   78  cd /usr/lib/x86_64-linux-gnu/
+   79  ls -l
+   80  cd -
+   81  ls -l
+   82  locate libstdc++.so.5
+   83  ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.5.0.7 /usr/lib64/libstdc++.so.5
+   84  ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.5 /usr/lib64/libstdc++.so.5
+   85  updatedb
+   86  aptitude install libstdc++
+   87  aptitude install libstdc++
+   88  aptitude update
+   89  aptitude upgrade
+   90  apt-get update
+   91  vi /etc/apt/sources.list
+   92  apt-get update
+   93  apt-get upgrade
+   94  aptitude upgrade
+   95  locate libstdc++.so.5
+   96  ls -l /usr/lib/i386-linux-gnu/libstdc++.so.5
+   97  ln -s /usr/lib/i386-linux-gnu/libstdc++.so.5 /usr/lib64/libstdc++.so.5
+   98  cp /usr/lib/i386-linux-gnu/libstdc++.so.5  /usr/lib64/libstdc++.so.5
+   99  cp /usr/lib/i386-linux-gnu/libstdc++.so.5  /usr/lib64/
+  100  ls -l /usr/mkdir -p /usr/lib64
+  101  mkdir -p /usr/lib64
+  102  ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.5
+  103  ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.5 /usr/lib64/libstdc++.so.5
+  104  cd /u01/app/oracle/oraInventory/
+  105  ls -l
+根据提示查看日志，并没发现帮助信息，如下所示：
+复制代码 代码如下:
+
+[root@hyl ~]# tail -f /u01/app/oracle/oraInventory/logs/installActions2014-09-20_02-43-00PM.log 
+INFO: make[1]: Leaving directory `/u01/app/oracle/product/10.2.0/db_1/sysman/lib' 
+INFO: make: *** [nmccollector] Error 2 
+INFO: End output from spawned process. 
+
+INFO: ---------------------------------- 
+
+INFO: Exception thrown from action: make 
+
+Exception Name: MakefileException 
+
+Exception String: Error in invoking target 'collector' of makefile '/u01/app/oracle/product/10.2.0/db_1/sysman/lib/ins_emdb.mk'. See '/u01/app/oracle/oraInventory/logs/installActions2014-09-20_02-43-00PM.log' for details. 
+Exception Severity: 1
+
+处理方法：
+这里继续点击“continue”即可，待Oracle完成安装后，再手工执行相应脚本完成链接即可。
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+本人在此报错按照[oracle@hyl bin]$ /u01/app/oracle/product/10.2.0/db_1/bin/relink all方法解决。
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+
+当oracle完成安装后，如下操作
+
+[oracle@hyl bin]$ /u01/app/oracle/product/10.2.0/db_1/bin/relink all
+
+发现这种错误，是已经生成了可执行文件，编译过程无误，但执行不了。开始来寻求解决的方法：
+1。认为是否路径有错，用locate来定位此文件的路径，再来修改环境变量，看能否解决：（结果证明：无效，可见这种动态链接库无法加载的问题是与路径的环境变量无关）
+[yuxu@yx wxqView]$ locate libgtkglext-x11-1.0.so.0
+
+
+无计可施，来上网查资料：
+========================================================================
+libstdc++.so.5: cannot open shared object file: No such file or directory
+Problem: An application is running on Linux 7.x which uses gcc 3.2.x. It gets one of the following error messages:
+
+libstdc++.so.5: cannot open shared object file: No such file or directory
+libgcc_s.so.1: cannot open shared object file: No such file or directory
+Explanation: libstdc++.so.5 (the library for gcc 3.2.x) is installed in /usr/local/lib However, the system will only seach /usr/lib (where the 2.95.0 and other older libraries are stored).
+Solution: Create symbolic links to make the libraries appear in the old folder:
+
+ln -s /usr/local/lib/libstdc++.so.5 /usr/lib/libstdc++.so.5
+ln -s /usr/local/lib/libgcc_s.so.1 /usr/lib/libgcc_s.so.1
+
+===========================================================================
+第二次按照 上面的思路来将/usr/lib/lib/ 下的两个文件copy到/usr/lib下来：（结果证明 还是不行）
+[root@yx lib]# cp ./lib/libgtkglext-x11-1.0.
+libgtkglext-x11-1.0.a libgtkglext-x11-1.0.so.0
+libgtkglext-x11-1.0.la libgtkglext-x11-1.0.so.0.0.0
+libgtkglext-x11-1.0.so 
+[root@yx lib]# cp ./lib/libgtkglext-x11-1.0.so.0 ./
+[root@yx lib]# cp ./lib/libgtkglext-x11-1.0.
+libgtkglext-x11-1.0.a libgtkglext-x11-1.0.so.0
+libgtkglext-x11-1.0.la libgtkglext-x11-1.0.so.0.0.0
+libgtkglext-x11-1.0.so 
+[root@yx lib]# cp ./lib/libgtkglext-x11-1.0.so* ./
+cp: overwrite `./libgtkglext-x11-1.0.so.0'? y
+[root@yx lib]# pwd
+/usr/lib
+[yuxu@yx wxqView]$ make
+demView G49G001034 200 200 100
+demView: error while loading shared libraries: libgdkglext-x11-1.0.so.0: cannot open shared object file: No such file or directory
+make: *** [all] Error 127
+============================================================================
+继续搜寻相应的贴子，参考别人的经验：
+请问在什么情况下会出现如下错误:
+lin113-14:70% ./gtkTensorViewer: error while loading shared libraries:
+libgtkglext-x11-1.0.so.0: cannot open shared object file: No such file ordirectory
+lin113-14:71% echo $LD_LIBRARY_PATH
+/usr/local/lib:/opt/gnome/lib64:/usr/X11R6/lib64:/cise/research51/cvgmi_04/local/lib
+lin113-14:72% ls /cise/research51/cvgmi_04/local/lib/libgtkglext-x11-1.0.*
+/cise/research51/cvgmi_04/local/lib/libgtkglext-x11-1.0.a 
+/cise/research51/cvgmi_04/local/lib/libgtkglext-x11-1.0.so.0@
+/cise/research51/cvgmi_04/local/lib/libgtkglext-x11-1.0.la* 
+/cise/research51/cvgmi_04/local/lib/libgtkglext-x11-1.0.so.0.2.4*
+/cise/research51/cvgmi_04/local/lib/libgtkglext-x11-1.0.so@
+看看是不是需要的共享库的版本不对呀。
+error while loading shared libraries
+不要使用动态链接库 .so
+此时应该使用静态链接库,就是执行文件自己带库,执行文件体积会变大点,
+在makefile中加 -static
+/etc/ld.so.conf加上lib路径，然后做ldconfig (root)
+===============================================================
+参考以上做法一一来做：
+先试一下修改$LD_LIBRARY_PATH，看看改动这个链接路径对不对：（问题解决）
+[yuxu@yx wxqView]$ echo $LD_LIBRARY_PATH
+[yuxu@yx wxqView]$ export LD_LIBRARY_PATH=/usr/lib:/usr/lib/lib
+[yuxu@yx wxqView]$ make
+OK！问题解决。
+为一劳永逸解决这个问题，将export LD_LIBRARY_PATH=/usr/lib:/usr/lib/lib写入~/.bash_profile中去
+# .bash_profile
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+. ~/.bashrc
+fi
+# User specific environment and startup programs
+PATH=$PATH:$HOME/bin:/usr/sbin:/usr/local/bin:/home/yuxu/bin
+export LC_ALL=POSIX
+export LANG=POSIX
+export BROWSER=/usr/bin/mozilla
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/ ＝＝＝＞用于编译链接万工的代码
+export LD_LIBRARY_PATH=/usr/lib:/usr/lib/lib ==>用于执行万工的使用动态链接库的程序
+unset USERNAME
+
+bash:gcc:command not found
+出现这个问题时，首先用命令：
+whereis gcc
+查找看看gcc，gcc是否安装好。如果此时显示
+gcc：/usr/bin/gcc
+则说明已装好了，只需要配置到PATH路径下面就行了。
+如果只是显示
+gcc：
+则说明gcc没有下载。
+Centos（Rehat系列）系统下载gcc命令：yum install gcc
+Ubuntu系统下载gcc命令：apt-get inatall gcc
+
+
+
+最下面把DB2安装加下，只是简略步骤，挺简单的，图形安装
+
+DB2安装方法:
+环境Debian8/9
+都安装过没什么大的问题，DB2版本v11.1_linuxx64
+apt-get update && apt-get upgrade 
+cd /opt
+tar -zxvf v11.1_linuxx64_expc.tar.gz 
+cd expc/
+ll
+./db2prereqcheck 
+./db2_install 
+./db2_install -f sysreq
+ls -l
+./db2setup 
+./db2setup -f sysreq
+cd /opt/ibm/db2/V11.1/adm/
+ll
+chmod -R 755 *
+./db2licm -a /opt/expc/db2/license/db2expc_uw.lic 
+su - db2inst1
+cd /opt/
+ll
+tar -zxvf v11.1_linuxx64_nlpack.tar.gz
