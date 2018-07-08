@@ -4,9 +4,224 @@
 有些是写的不全；
 最后没有办法，在google上搜了篇资料，换成Debian8试了下，一切顺利,OK，Perfect
 链接地址（reproduce from this address）：https://tarique21.wordpress.com/2010/04/05/oracle-10g-on-debian-64bit-32-bit-as-well/
+content(I need to learn):
+between 
+|||||||||||||||| and |||||||||||||||||||
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+Oracle 10g on Debian 64bit (32 bit as well)
+Preparing the system
+We will have to:
+
+* Create required users and groups accounts
+* Set required system parameters in /etc/sysctl.conf
+* Installing complementary packages
+
+Creating Oracle Inventory and dba group:
+
+sudo groupadd oinstall
+sudo groupadd dba
+
+Creating Oracle user home and account:
+
+sudo useradd -g oinstall -G dba -d /opt/oracle -s /bin/bash oracle
+sudo chown -R oracle:oinstall /opt/oracle
+
+Adding nobody group to nobody user:
+
+sudo addgroup nobody
+sudo usermod -g nobody nobody
+
+
+Updating kernel parameters
+
+This is one of the longest task of this installation. Because you will have to check your current config.
+Check commands in Oracle documentation for this, section 6 Configuring Kernel Parameters.
+
+Then, edit the file /etc/sysctl.conf as described below:
+
+sudo gedit /etc/sysctl.conf
+Add the following lines:
+
+# Oracle 10g
+kernel.sem = 250 32000 100 128
+net.ipv4.ip_local_port_range = 32768 65000
+# Replace kernel.shmmax with the half of your memory in bytes
+# 1073741824 is 1 GigaBytes
+kernel.shmmax=1073741824
+net.core.rmem_default = 262144
+net.core.rmem_max = 262144
+net.core.wmem_default = 262144
+net.core.wmem_max = 262144
+# To allow dba to allocate hugetlbfs pages
+# 1002 is your DBA group, id. grep dba /etc/group will give this value
+vm.hugetlb_shm_group = 1002
+
+Must adjust the kernel.shmmax parameter rest works with default value.
+
+sysctl -p to activate the new value
+sysctl -a to list the value already set
+
+About HUGE TLB.
+
+This is needed on Ubuntu Karmic and was not required on Ubuntu Jaunty (kernel parameters were apparently different).
+
+Without this parameters your Oracle instance won’t start.
+
+You have to replace the value of 1002 with the group ID of the DBA group.
+
+Read this great howto install Oracle on debian to know more about huge tlb parameter.
+
+Now, update /etc/security/limits.conf:
+
+sudo gedit /etc/security/limits.conf
+And add the following parameters:
+
+# Oracle
+oracle soft nproc 2047
+oracle hard nproc 16384
+oracle soft nofile 1024
+oracle hard nofile 65536
+
+Check that /etc/pam.d/login contains a line like this one:
+
+session required pam_limits.so
+Installing additional packages
+
+If not already done, update your distribution with the latest packages:
+
+sudo apt-get update
+sudo apt-get dist-upgrade
+
+Install the following additional packages:
+
+sudo apt-get install gcc make binutils gawk x11-utils rpm alien ksh lsb-rpm
+sudo apt-get install autotools-dev libltdl-dev
+sudo apt-get install –yes autoconf automake binutils bzip2 doxygen gcc less libc6-dev make perl-doc unzip zlibc
+sudo apt-get install libaio1 lesstif2 libmotif3 libaio-dev
+
+# Some of the ones below may not be needed, but as of many failures before getting it doing right, all these have been installed.
+sudo apt-get install libpthread-stubs0 libpthread-stubs0-dev libpth-dev libc6-i386 libc6-dev-i386
+sudo apt-get install g++-multilib gcc-multilib
+
+And also these below to try to get ride of link errors.
+
+sudo aptitude install lesstif2-dev lib32stdc++6 lib32z1 sysstat rlwrap unixodbc unixodbc-dev elfutils
+sudo apt-get install gsfonts-x11 java-common sun-java6-bin sun-java6-jre
+
+And to prevent from runInstaller terrific ./runInstaller: line 54: ./install/.oui: No such file or directory error message:
+
+sudo apt-get install ia32-libs
+
+Oracle 10g also needs libstdc++5 that is not provided with Debian.
+
+There are many ways to install it,
+Simply apt-get install libstdc++5 should work with Debian
+
+But you can follow this too
+I have followed this howto to install libstdc++5 on Ubuntu Karmic
+
+mkdir /tmp/libstdc++5
+cd /tmp/libstdc++5
+wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-3.3/libstdc++5_3.3&#8230;.
+wget http://mirrors.kernel.org/ubuntu/pool/universe/g/gcc-3.3/libstdc++5_3.3&#8230;.
+
+sudo dpkg –force-architecture -i libstdc++5_3.3.6-17ubuntu1_i386.deb
+sudo mv /usr/lib/libstdc++.so.5* /usr/lib32/
+
+sudo dpkg -i libstdc++5_3.3.6-17ubuntu1_amd64.deb
+
+Now reboot your system to be sure these parameters will be taken in account for the next part of the installation.
+
+Others configurations
+
+Now, change default sh script by bash:
+
+sudo ln -sf /bin/bash /bin/sh
+
+Then some others commands used by Oracle installer:
+
+sudo ln -s /usr/bin/awk /bin/awk
+sudo ln -s /usr/bin/rpm /bin/rpm
+sudo ln -s /usr/bin/basename /bin/basename
+
+Installing Oracle
+
+extract the downloaded file:
+
+cpio -idmv < 10201_database_linux_x86_64.cpio
+
+Then,
+./runInstaller -ignoreSysPrereqs
+
+Starting and stopping Oracle
+
+We should now be able to start Oracle database if you had choosed to create one during installation. Yes go to next section Creating an Oracle database and come back.
+
+First, add the following variable declaration in your oracle user .profile, .bashrc or .bash_profile scripts:
+
+export ORACLE_SID=ORCL
+export ORAENV_ASK=NO
+export PATH=$PATH:/usr/local/bin
+
+if [ -f /usr/local/bin/oraenv ];then
+. /usr/local/bin/oraenv
+fi
+
+Starting up the database
+
+Finally, to manually start Oracle, run these commands as oracle user
+
+lsnrctl start
+dbstart
+
+You may encounter this error Failed to auto-start Oracle Net Listene using /ade/vikrkuma_new/oracle/bin/tnslsnr.
+
+Also your database may not start.
+Then, first check in /etc/oratab that it has the ‘Y’ flag, if not, set it.
+
+sudo gedit /etc/oratab
+
+And replace N by Y
+
+orcl:/opt/oracle/oracle10gse/product/10.2.0/db_1:Y
+
+To get ride of this the Failed to auto-start Oracle Net Listene using /ade/vikrkuma_new/oracle/bin/tnslsnr message, edit dbstart script and replace the hardcoded path with $ORACLE_HOME
+
+/opt/oracle/oracle10gse/product/10.2.0/db_1/bin/dbstart
+
+And edit this part of script
+
+# Set this to bring up Oracle Net Listener
+ORACLE_HOME_LISTNER=$ORACLE_HOME
+
+Connecting to the database
+
+Now, just try to connect to the freshly started database:
+
+oracle@ubuntu-laptop:~/oracle10gse/product/10.2.0/db_1/log$ sqlplus system@orcl
+SQL*Plus: Release 10.2.0.1.0 – Production on Thu Feb 11 12:01:24 2010
+Copyright (c) 1982, 2005, Oracle. All rights reserved.
+Enter password:
+Connected to:
+Oracle Database 10g Release 10.2.0.1.0 – 64bit Production
+SQL> select ‘Oracle 10g is working on Debian 5.0’ as SUCCESS from dual;
+SUCCESS
+——————————————-
+Oracle 10g is working on Debian 5.0
+SQL>
+
+Shutting down the database
+
+Just entry the following commands with Oracle user:
+
+dbshut
+lsnrctl stop
+
+|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
 非常感谢这位大神！！！
 相关history文件如下：
-
+my history file some information please :
  ln -sf /bin/bash /bin/sh
  ln -s /usr/bin/awk /bin/awk
  ln -s /usr/bin/rpm /bin/rpm
