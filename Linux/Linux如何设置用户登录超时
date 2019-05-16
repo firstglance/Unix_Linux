@@ -1,0 +1,16 @@
+Linux如何设置用户登录超时（闲置时间）
+1. 针对所有用户
+
+# vi /etc/profile
+...
+export TMOUT=900    # 设置闲置时间为15分钟，单位为秒;如果没有此行则直接添加进去
+...
+保存退出，使用命令 source /etc/profile 立即生效
+2. 针对特定用户（如针对user_1）
+# cd /home/user_1/
+# vi .bash_profile
+...
+export TMOUT=900
+...
+保存退出，使用命令 source /home/user_1/.bash_profile 立即生效
+
