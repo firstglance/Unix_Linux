@@ -1,0 +1,22 @@
+InstallGit
+StepByStep
+确保安装gcc、g++以及编译git所需要的包
+--安装gcc
+yum install gcc
+
+--安装g++
+yum install gcc-c++
+
+--安装编译所需的包
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+yum install gcc perl-ExtUtils-MakeMaker
+
+--下载文件到/opt/git目录下：
+wget http://www.xxx.xxx
+解压文件
+cd /opt/git/git-2.9.5
+./configure --prefix=/usr/local/git-2.9.5 && make install
+将编译好的git-2.9.5 bin目录添加到环境变量(或者增加到PATH中)
+source ~/.bash_profile
+查看git版本 
+git --version
